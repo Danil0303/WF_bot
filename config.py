@@ -8,6 +8,7 @@ load_dotenv('.env')
 class SettingConfig:
     token: str = os.getenv("TOKEN")
     channel_id:str = os.getenv('ID_CHANNEL')
+    dp_path: str = os.getenv("DB_PATH")
 
 @dataclass
 class YooKasConfig:
