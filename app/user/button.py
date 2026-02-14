@@ -21,3 +21,9 @@ def buy_button()-> InlineKeyboardMarkup:
     return InlineKeyboardMarkup(inline_keyboard=[
         [InlineKeyboardButton(text='Вступить в клуб', callback_data='buy')]
     ])
+
+def payment_button(url: str)-> InlineKeyboardMarkup:
+    return InlineKeyboardMarkup(inline_keyboard=[
+        [InlineKeyboardButton(text="Оплатить подписку",
+                              url=url)]
+    ])

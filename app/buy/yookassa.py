@@ -8,6 +8,7 @@ from aioyookassa.types.params import CreatePaymentParams
 from loguru import logger
 from app.db.model import Subscribe
 from app.db.method import add_user, get_user
+from app.user.button import payment_button
 from config import YooKasConfig
 from aiogram import Router, types, Bot
 from aiogram.fsm.context import FSMContext
@@ -81,9 +82,12 @@ async def buy_subscription(callback_query: types.CallbackQuery, bot: Bot, state:
             payment_response = create_payment(user_id=callback_query.from_user.id)
             payment = await client.payments.create_payment(payment_response)
             logger.success(f"✅ Платеж создан: {payment.id}")
-            await callback_query.message.answer(f"Ссылка для оплаты подписки 30 дней на закрытый клуб WildFemme\n"
-                                                   f"Цена подписки - 2999p\n"
-                                                   f"Ссылка на оплату:\n {payment.confirmation.url}")
+            await callback_query.message.answer(text=f"Оплаты подписки 30 дней на закрытый клуб WildFemme\n"
+                                                    f"Цена подписки - 2999p\n",
+                                                reply_markup=payment_button(payment.confirmation.url))
+            # await callback_query.message.answer(f"Ссылка для оплаты подписки 30 дней на закрытый клуб WildFemme\n"
+            #                                        f"Цена подписки - 2999p\n"
+            #                                        f"Ссылка на оплату:\n {payment.confirmation.url}")
             start_time = datetime.now()
             timeout = timedelta(minutes=int(YooKasConfig.time_delta))
             payment_info = await client.payments.get_payment(payment.id)
