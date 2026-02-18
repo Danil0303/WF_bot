@@ -106,9 +106,9 @@ async def buy_subscription(callback_query: types.CallbackQuery, bot: Bot, state:
                     logger.success("Платеж подтвержден")
                     await add_user(id_user=callback_query.from_user.id, id_subscribe=str(payment_info.payment_method.id))
                     return await callback_query.message.answer(
-                        text=f"Оплата прошла успешно!\n"
-                             "Добро пожаловать в закрытый женский клуб Вероники Литвинец «Wild Femme»\n"
-                            f"Вот ссылка для входа: {YooKasConfig.link}\n"
+                        text=f"Поздравляю, оплата прошла успешно!✅\n\n"
+                             "Добро пожаловать в закрытый женский клуб Вероники Литвинец «Wild Femme»!\n\n"
+                            f"Ссылка для входа👉🏻 {YooKasConfig.link}\n\n"
                              "Доступ активен 30 дней с момента оплаты."
                         )
                 await callback_query.message.answer(text="Оплата не прошла!")

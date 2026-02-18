@@ -65,7 +65,7 @@ async def cancel_subscription(callback_query: types.CallbackQuery, bot: Bot):
     if data:
         await bot.send_message(
             chat_id=callback_query.message.chat.id,
-            text='К сожалению, подписка отменена. У тебя есть 5 дней, чтобы вернуться без ограничений')
+            text='К сожалению, подписка отменена🥺 У тебя есть 5 дней, чтобы вернуться без ограничений.')
     else:
         await bot.send_message(
             chat_id=callback_query.message.chat.id,
