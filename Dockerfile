@@ -9,5 +9,6 @@ COPY . .
 COPY templates/images /app/templates/images
 
 WORKDIR /app
+RUN ls -l
 
 CMD ["python", "main.py"]
