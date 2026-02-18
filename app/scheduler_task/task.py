@@ -26,7 +26,7 @@ async def push_not_sub(bot: Bot):
                     await blocking(id_user=user.id_user, block=True)
                     await bot.ban_chat_member(user_id=user.id_user, chat_id=str(SettingConfig.channel_id))
                     await bot.send_message(chat_id=user.id_user, text='Доступ временно закрыт. Повторное вступление будет доступно через 30 дней.')
-                elif del_time == 36:
+                elif del_time == 25:
                     await blocking(id_user=user.id_user, block=False)
                     await bot.unban_chat_member(user_id=user.id_user, chat_id=str(SettingConfig.channel_id))
                     await bot.send_message(chat_id=user.id_user, text='Доступ снова открыт. Ты можешь снова вступить в клуб', reply_markup=buy_button())
