@@ -82,7 +82,7 @@ async def buy_subscription(callback_query: types.CallbackQuery, bot: Bot, state:
             payment_response = create_payment(user_id=callback_query.from_user.id)
             payment = await client.payments.create_payment(payment_response)
             logger.success(f"✅ Платеж создан: {payment.id}")
-            await callback_query.message.answer(text=f"Оплаты подписки 30 дней на закрытый клуб WildFemme\n"
+            await callback_query.message.answer(text=f"Оплата подписки 30 дней на закрытый клуб «WildFemme»👇🏻\n\n"
                                                     f"Цена подписки - 2999p\n",
                                                 reply_markup=payment_button(payment.confirmation.url))
             # await callback_query.message.answer(f"Ссылка для оплаты подписки 30 дней на закрытый клуб WildFemme\n"
