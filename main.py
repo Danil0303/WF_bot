@@ -1,4 +1,5 @@
 import functools
+import pathlib
 from datetime import datetime, timedelta
 
 from aiogram import Bot, Dispatcher, types
@@ -27,7 +28,7 @@ dp.include_router(router_yookassa)
 
 @dp.message(CommandStart())
 async def start(message: types.Message):
-    await message.answer_photo(photo=FSInputFile(r'/templates/images/IMG_4558.PNG'),
+    await message.answer_photo(photo=FSInputFile(path=pathlib.Path('templates/images/IMG_4558.PNG')),
         caption=f"Привет, {message.from_user.first_name}! \n\n"
                          f"Ты в боте закрытого женского клуба Вероники Литвинец «Wild Femme».\n\n"
                          "Это пространство для женщин, которые хотят:\n\n"
