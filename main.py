@@ -6,7 +6,7 @@ from aiogram.client.default import DefaultBotProperties
 from aiogram.enums import ParseMode
 from aiogram.filters import CommandStart, Command
 from aiogram.types import BotCommand, BotCommandScopeDefault
-
+from aiogram.types import FSInputFile
 from app.db.base import create_tables
 from app.db.method import get_user
 from app.user.button import start_command, cancel_button_subscription
@@ -27,13 +27,15 @@ dp.include_router(router_yookassa)
 
 @dp.message(CommandStart())
 async def start(message: types.Message):
-    await message.answer(f"Привет, {message.from_user.first_name}! \n"
-                         f"Ты в боте закрытого женского клуба Вероники Литвинец «Wild Femme».\n"
-                         "Это пространство для женщин, которые хотят:\n"
-                         "✨ чувствовать своё тело\n"
-                         '✨ быть в энергии и форме\n'
-                         '✨ раскрывать женственность и сексуальность\n'
-                         '✨ быть частью крутого комьюнити', reply_markup=start_command())
+    await message.answer_photo(photo=FSInputFile(r'.\templates\images\IMG_4558.PNG'),
+        caption=f"Привет, {message.from_user.first_name}! \n\n"
+                         f"Ты в боте закрытого женского клуба Вероники Литвинец «Wild Femme».\n\n"
+                         "Это пространство для женщин, которые хотят:\n\n"
+                         "❤️чувствовать и любить своё тело\n"
+                         '✨быть в энергии и форме\n'
+                         '\U0001FAE6 раскрывать женственность и сексуальность\n'
+                         '\U0001FAC2 быть частью крутого, поддерживающего комьюнити', reply_markup=start_command()
+                               )
 
 @dp.message(Command('stop'))
 async def stop(message: types.Message):
