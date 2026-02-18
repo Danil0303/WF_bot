@@ -47,6 +47,10 @@ async def stop(message: types.Message):
     else:
         await message.answer(text=f"Упс, у вас нет подписки!")
 
+@dp.message(Command('help'))
+async def help_bot(message: types.Message):
+    await message.answer("Если есть какие-либо вопросы по клубу или сложности с оплатой, смело пиши мне лично: @nika_litvinets ❤️")
+
 @dp.message()
 async def echo_handler(message: types.Message) -> None:
     try:
