@@ -1,7 +1,6 @@
 import functools
 import pathlib
 from datetime import datetime, timedelta
-
 from aiogram import Bot, Dispatcher, types
 from aiogram.client.default import DefaultBotProperties
 from aiogram.enums import ParseMode
@@ -13,6 +12,7 @@ from app.db.method import get_user
 from app.user.button import start_command, cancel_button_subscription
 from app.user.answer import router_answer
 from app.buy.yookassa import router_yookassa
+from app.method.echo import echo_router
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from apscheduler.triggers.interval import IntervalTrigger
 from config import SettingConfig
@@ -20,11 +20,14 @@ from loguru import logger
 from app.scheduler_task.task import push_not_sub, push_sub
 import asyncio
 
+
+
 apscheduler_task = AsyncIOScheduler()
 
 dp = Dispatcher()
 dp.include_router(router_answer)
 dp.include_router(router_yookassa)
+dp.include_router(echo_router)
 
 @dp.message(CommandStart())
 async def start(message: types.Message):
@@ -51,12 +54,6 @@ async def stop(message: types.Message):
 async def help_bot(message: types.Message):
     await message.answer("Если есть какие-либо вопросы по клубу или сложности с оплатой, смело пиши мне лично: @nika_litvinets ❤️")
 
-@dp.message()
-async def echo_handler(message: types.Message) -> None:
-    try:
-        await message.answer(f"Привет, {message.from_user.first_name}!\nВоспользуйся командами")
-    except TypeError:
-        await message.answer("Nice try!")
 
 async def start_bot(bot: Bot):
     await set_commands(bot)

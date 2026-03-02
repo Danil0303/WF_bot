@@ -52,7 +52,8 @@ async def cancel_subscribe_db(session: async_sessions, id_user: int) -> bool:
         logger.info(f"Пользователь с ID:{id_user} не найден!")
         return False
     try:
-        await session.execute(update(Subscribe).filter_by(id_user=id_user).values(subscribe=False))
+        await session.execute(update(Subscribe).filter_by(id_user=id_user).values(subscribe=False,
+                                                                                  id_subscribe=''))
         await session.commit()
         logger.success(f"Пользователь с ID:{id_user} отменил подписку!")
         return True
@@ -62,7 +63,7 @@ async def cancel_subscribe_db(session: async_sessions, id_user: int) -> bool:
         return False
 
 @connection
-async def add_user(session: async_sessions, id_user: int, id_subscribe: str):
+async def add_user(session: async_sessions, id_user: int, id_subscribe: str, email: str):
     user = await get_user(id_user)
     if user:
         logger.info(f'Пользователь {id_user} уже существует')
@@ -74,7 +75,8 @@ async def add_user(session: async_sessions, id_user: int, id_subscribe: str):
                              data_end=data+timedelta(days=30),
                              subscribe=True,
                              id_subscribe=id_subscribe,
-                             block=False
+                             block=False,
+                             email_str=email
                              )
         session.add(user_new)
         await session.commit()

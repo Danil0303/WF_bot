@@ -18,3 +18,7 @@ class YooKasConfig:
     return_url_api: str = os.getenv('RETURN_URL')
     value_cur: float = os.getenv("VALUE_CUR")
     time_delta: int = os.getenv("TIME_DELTA", 10)
+
+@dataclass
+class EmailReg:
+    EMAIL_REGEXP = r"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"

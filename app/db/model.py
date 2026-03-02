@@ -10,5 +10,6 @@ class Subscribe(Base):
     data_start: Mapped[datetime] = mapped_column(DateTime)
     data_end: Mapped[datetime] = mapped_column(DateTime)
     subscribe: Mapped[bool] = mapped_column(BOOLEAN)
-    id_subscribe: Mapped[bool] = mapped_column(String)
+    id_subscribe: Mapped[str] = mapped_column(String)
     block: Mapped[bool]=mapped_column(BOOLEAN)
+    email_str: Mapped[str]=mapped_column(String)
