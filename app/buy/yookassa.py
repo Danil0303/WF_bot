@@ -114,7 +114,7 @@ async def buy_subscription(callback_query: types.CallbackQuery):
         time_not_blocking = 30-(datetime.today()-is_block.data_end).days
         return await callback_query.message.answer("Ваш аккаунт заблокирован на 30 дней!\n "
                                                       f"Осталось еще {time_not_blocking} дней")
-    document = InputFile("../../templates/documents/Оферта.docx")
+    document = InputFile("../../templates/documents/document.docx")
     await callback_query.message.answer_document(document=document, reply_markup=button_documents())
 
 @router_yookassa.callback_query(lambda c: c.data == 'apply')
