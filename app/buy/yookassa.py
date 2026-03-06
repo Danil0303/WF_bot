@@ -19,6 +19,9 @@ from aiogram import Router, types
 from aiogram.fsm.context import FSMContext
 
 router_yookassa = Router()
+script_dir = pathlib.Path(__file__).resolve().parent
+template_dir = script_dir.parent.parent / "templates" / "documents"
+document_path = template_dir / "document.docx"
 
 class Form(StatesGroup):
     waiting_for_email = State()
@@ -114,7 +117,7 @@ async def buy_subscription(callback_query: types.CallbackQuery):
         time_not_blocking = 30-(datetime.today()-is_block.data_end).days
         return await callback_query.message.answer("Ваш аккаунт заблокирован на 30 дней!\n "
                                                       f"Осталось еще {time_not_blocking} дней")
-    document = FSInputFile("../../templates/documents/document.docx")
+    document = FSInputFile(document_path)
     await callback_query.message.answer_document(document=document,
                                                  caption="Принимаете условия публичной оферты?",
                                                  reply_markup=button_documents())
