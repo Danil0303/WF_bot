@@ -2,8 +2,9 @@ import asyncio
 from datetime import datetime, timedelta
 import re
 from aiogram.fsm.state import StatesGroup, State
-
-from app.user.button import payment_button
+from aiogram.types import InputFile, FSInputFile
+import pathlib
+from app.user.button import payment_button, button_documents, start_command
 from config import EmailReg
 from app.model.errors import TimeOutPayments
 from aioyookassa import YooKassa
@@ -107,14 +108,31 @@ async def auto_payment(user: Subscribe) -> bool:
             return False
 
 @router_yookassa.callback_query(lambda c: c.data == 'buy')
-async def buy_subscription(callback_query: types.CallbackQuery, state: FSMContext):
+async def buy_subscription(callback_query: types.CallbackQuery):
     is_block = await get_user(callback_query.from_user.id)
     if is_block and is_block.block:
         time_not_blocking = 30-(datetime.today()-is_block.data_end).days
         return await callback_query.message.answer("Ваш аккаунт заблокирован на 30 дней!\n "
                                                       f"Осталось еще {time_not_blocking} дней")
+    document = InputFile("../../templates/documents/Оферта.docx")
+    await callback_query.message.answer_document(document=document, reply_markup=button_documents())
+
+@router_yookassa.callback_query(lambda c: c.data == 'apply')
+async def apply(callback_query: types.CallbackQuery, state: FSMContext):
     await callback_query.message.answer("Пожалуйста, введите ваш email для чека:")
     await state.set_state(Form.waiting_for_email)
+
+@router_yookassa.callback_query(lambda c: c.data == 'not_apply')
+async def apply(callback_query: types.CallbackQuery):
+    await callback_query.message.answer_photo(photo=FSInputFile(path=pathlib.Path('templates/images/IMG_4558.PNG')),
+        caption=f"Привет, {callback_query.message.from_user.first_name}! \n\n"
+                         f"Ты в боте закрытого женского клуба Вероники Литвинец «Wild Femme».\n\n"
+                         "Это пространство для женщин, которые хотят:\n\n"
+                         "❤️чувствовать и любить своё тело\n"
+                         '✨быть в энергии и форме\n'
+                         '\U0001FAE6 раскрывать женственность и сексуальность\n'
+                         '\U0001FAC2 быть частью крутого, поддерживающего комьюнити', reply_markup=start_command()
+                               )
 
 @router_yookassa.message(Form.waiting_for_email)
 async def process_email(message: types.Message, state: FSMContext):

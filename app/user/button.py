@@ -27,3 +27,9 @@ def payment_button(url: str)-> InlineKeyboardMarkup:
         [InlineKeyboardButton(text="Оплатить подписку",
                               url=url)]
     ])
+
+def button_documents()-> InlineKeyboardMarkup:
+    return InlineKeyboardMarkup(inline_keyboard=[
+        [InlineKeyboardButton(text='Да', callback_data='apply'),
+         InlineKeyboardButton(text="Нет", callback_data="not_apply")]
+    ])
