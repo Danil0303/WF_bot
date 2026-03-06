@@ -115,7 +115,9 @@ async def buy_subscription(callback_query: types.CallbackQuery):
         return await callback_query.message.answer("Ваш аккаунт заблокирован на 30 дней!\n "
                                                       f"Осталось еще {time_not_blocking} дней")
     document = InputFile("../../templates/documents/document.docx")
-    await callback_query.message.answer_document(document=document, reply_markup=button_documents())
+    await callback_query.message.answer_document(document=document,
+                                                 caption="Принимаете условия публичной оферты?",
+                                                 reply_markup=button_documents())
 
 @router_yookassa.callback_query(lambda c: c.data == 'apply')
 async def apply(callback_query: types.CallbackQuery, state: FSMContext):
