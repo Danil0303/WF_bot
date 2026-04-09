@@ -52,7 +52,7 @@ def create_payment_method(user_id: int, email: str):
 
 
         ),
-        save_payment_method=True
+        # save_payment_method=True
     )
 def save_payment(user_id: int, save_id: str, email: str):
     return CreatePaymentParams(
