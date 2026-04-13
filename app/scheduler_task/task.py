@@ -14,9 +14,9 @@ async def push_not_sub(bot: Bot):
     if users:
         logger.info(f'Обнаружено {len(users)} без подписки')
         for user in users:
-            print(user.id_user)
             try:
                 del_time = (datetime.today()-user.data_end).days
+                logger.info(del_time)
                 if del_time == 1:
                     await bot.send_message(chat_id=user.id_user, text='Если передумаешь — можешь вернуться прямо сейчас.')
                 elif del_time == 3:
@@ -28,7 +28,7 @@ async def push_not_sub(bot: Bot):
                     await bot.ban_chat_member(user_id=user.id_user, chat_id=str(SettingConfig.channel_id))
                     await bot.send_message(chat_id=user.id_user, text='Доступ временно закрыт. Повторное вступление будет доступно через 30 дней.')
                 elif str(user.id_user) == '1165723722':
-                    print(user.id_user)
+                    logger.info(user.id_user)
                     await bot.ban_chat_member(user_id=user.id_user, chat_id=str(SettingConfig.channel_id))
                     await bot.send_message(chat_id=user.id_user,
                                            text='Доступ временно закрыт. Повторное вступление будет доступно через 30 дней.')
