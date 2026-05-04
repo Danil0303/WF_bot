@@ -45,12 +45,16 @@ async def push_sub(bot: Bot):
                 logger.info(f"{user.id_user}-{del_time}-{user.email_str}")
                 if del_time == 27:
                     await bot.send_message(chat_id=user.id_user, text='Твоя подписка заканчивается через 3 дня.\nЧтобы не терять доступ — убедись, что подписка активна.')
-                elif del_time == 30:
+                elif del_time in [30, 31, 32]:
                     result = await auto_payment(user)
                     if result:
-                        return await bot.send_message(chat_id=user.id_user, text='Подписка продлена!')
-                    await cancel_subscribe_db(id_user=user.id_user)
-                    await bot.send_message(chat_id=user.id_user, text='Подписка не продлена!')
+                        await bot.send_message(chat_id=user.id_user, text='Подписка продлена!')
+                        continue
+                    if del_time == 32 and not result:
+                        await cancel_subscribe_db(id_user=user.id_user)
+                        await bot.send_message(chat_id=user.id_user, text='Подписка не продлена!')
+                        continue
+                    await bot.send_message(chat_id=user.id_user, text='Упс, оплата не прошла. Повторное списание через 24 часа, проверьте, пожалуйста, баланс привязанной карты и наличие подписки')
             except Exception as exp:
                 logger.error(f"{exp}->{user.id_user}")
                 continue
