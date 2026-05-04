@@ -102,7 +102,7 @@ async def auto_payment(user: Subscribe) -> bool:
             logger.error(exp)
             return False
         else:
-            logger.info(f"📊 Статус платежа: {payment_info.status}")
+            logger.info(f"📊 Статус платежа: {payment_info.status} - {user.email_str}")
             if payment_info.status == PaymentStatus.SUCCEEDED:
                 logger.success("Платеж подтвержден")
                 await add_user(id_user=user.id_user, id_subscribe=str(payment_info.payment_method.id),
