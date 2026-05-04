@@ -57,10 +57,10 @@ def create_payment_method(user_id: int, email: str):
 def save_payment(user_id: int, save_id: str, email: str):
     return CreatePaymentParams(
         amount=Money(value=float(YooKasConfig.value_cur), currency=Currency.RUB),
-        confirmation=Confirmation(
-            type=ConfirmationType.REDIRECT,
-            return_url=YooKasConfig.return_url_api
-        ),
+        # confirmation=Confirmation(
+        #     type=ConfirmationType.REDIRECT,
+        #     return_url=YooKasConfig.return_url_api
+        # ),
         description="Подписка 30 дней на закрытый клуб WildFemme - 2999p",
         metadata = {'user_id': user_id},
         capture=True,
