@@ -3,6 +3,7 @@ from datetime import datetime, timedelta
 import re
 from aiogram.fsm.state import StatesGroup, State
 from aiogram.types import FSInputFile
+from aiogram import Bot
 import pathlib
 from app.user.button import payment_button, button_documents, start_command
 from config import EmailReg
@@ -140,7 +141,7 @@ async def apply(callback_query: types.CallbackQuery):
                                )
 
 @router_yookassa.message(Form.waiting_for_email)
-async def process_email(message: types.Message, state: FSMContext):
+async def process_email(message: types.Message, state: FSMContext, bot: Bot):
     email = message.text
     if bool(re.match(EmailReg.EMAIL_REGEXP, email)):
         await state.update_data(user_email=email)
@@ -176,16 +177,21 @@ async def process_email(message: types.Message, state: FSMContext):
                         await add_user(id_user=message.from_user.id,
                                        id_subscribe=str(payment_info.payment_method.id),
                                        email=email)
-                        return await message.answer(
+                        await message.answer(
                             text=f"Поздравляю, оплата прошла успешно!✅\n\n"
                                  "Добро пожаловать в закрытый женский клуб Вероники Литвинец «Wild Femme»!\n\n"
                                  f"Ссылка для входа👉🏻 {YooKasConfig.link}\n\n"
                                  "Доступ активен 30 дней с момента оплаты."
                         )
+                        return await bot.send_message(chat_id=1027526485, text=f'Пользователь: {message.chat.username} оплатил подписку!')
                     await message.answer(text="Оплата не прошла!")
+                    await bot.send_message(chat_id=1027526485,
+                                           text=f'Пользователь: {message.chat.username} не смог оплатить подписку!')
                 except TimeOutPayments as exp:
                     logger.error(exp)
                     await message.answer(text="Оплата не прошла!")
+                    await bot.send_message(chat_id=1027526485,
+                                           text=f'Пользователь: {message.chat.username} не смог оплатить подписку!')
         except Exception as e:
             logger.error(e)
             await message.answer( "Упс, похоже, что-то пошло не так. Обратись за помощью сюда: @nika_litvinets")

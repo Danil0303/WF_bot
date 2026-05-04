@@ -26,10 +26,14 @@ async def push_not_sub(bot: Bot):
                     await blocking(id_user=user.id_user, block=True)
                     await bot.ban_chat_member(user_id=user.id_user, chat_id=str(SettingConfig.channel_id))
                     await bot.send_message(chat_id=user.id_user, text='Доступ временно закрыт. Повторное вступление будет доступно через 30 дней.')
+                    await bot.send_message(chat_id=1027526485,
+                                           text=f"Пользователь: {user.email_str} заблокирован на 30 дней!")
                 elif del_time == 30:
                     await blocking(id_user=user.id_user, block=False)
                     await bot.unban_chat_member(user_id=user.id_user, chat_id=str(SettingConfig.channel_id))
                     await bot.send_message(chat_id=user.id_user, text='Доступ снова открыт. Ты можешь снова вступить в клуб', reply_markup=buy_button())
+                    await bot.send_message(chat_id=1027526485,
+                                           text=f"Пользователь: {user.email_str} разблокирован!")
             except Exception as exp:
                 logger.error(f"{exp}->{user.id_user}")
                 continue
@@ -45,16 +49,23 @@ async def push_sub(bot: Bot):
                 logger.info(f"{user.id_user}-{del_time}-{user.email_str}")
                 if del_time == 27:
                     await bot.send_message(chat_id=user.id_user, text='Твоя подписка заканчивается через 3 дня.\nЧтобы не терять доступ — убедись, что подписка активна.')
+                elif del_time == 29:
+                    await bot.send_message(chat_id=1027526485,
+                                           text=f"Завтра списание у пользователя: {user.email_str}!")
                 elif del_time in [30, 31, 32]:
                     result = await auto_payment(user)
                     if result:
                         await bot.send_message(chat_id=user.id_user, text='Подписка продлена!')
+                        await bot.send_message(chat_id=1027526485, text=f"Пользователь: {user.email_str} оплатил подписку!")
                         continue
                     if del_time == 32 and not result:
                         await cancel_subscribe_db(id_user=user.id_user)
                         await bot.send_message(chat_id=user.id_user, text='Подписка не продлена!')
+                        await bot.send_message(chat_id=1027526485,
+                                               text=f"У пользователя: {user.email_str} отменена подписка!")
                         continue
                     await bot.send_message(chat_id=user.id_user, text='Упс, оплата не прошла. Повторное списание через 24 часа, проверьте, пожалуйста, баланс привязанной карты и наличие подписки')
+                    await bot.send_message(chat_id=1027526485, text=f"У пользователь: {user.email_str} оплата не прошла!")
             except Exception as exp:
                 logger.error(f"{exp}->{user.id_user}")
                 continue
