@@ -42,6 +42,7 @@ async def push_sub(bot: Bot):
         for user in users:
             try:
                 del_time = (datetime.today()-user.data_start).days
+                logger.info(f"{user.id_user}-{del_time}")
                 if del_time == 27:
                     await bot.send_message(chat_id=user.id_user, text='Твоя подписка заканчивается через 3 дня.\nЧтобы не терять доступ — убедись, что подписка активна.')
                 elif del_time == 30:
