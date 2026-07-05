@@ -3,7 +3,7 @@ from aiogram import Bot
 from loguru import logger
 
 from app.buy.yookassa import auto_payment
-from config import SettingConfig
+from config import SettingConfig, YooKasConfig
 from app.db.method import get_users_subscribe, blocking, cancel_subscribe_db
 from app.user.button import buy_button
 
@@ -66,6 +66,8 @@ async def push_sub(bot: Bot):
                         continue
                     await bot.send_message(chat_id=user.id_user, text='Упс, оплата не прошла. Повторное списание через 24 часа, проверьте, пожалуйста, баланс привязанной карты и наличие подписки')
                     await bot.send_message(chat_id=1027526485, text=f"У пользователь: {user.email_str} оплата не прошла!")
+                elif user.email_str == "annasimonenko2006@mail.ru":
+                    await bot.send_message(chat_id=user.id_user, text=f"{YooKasConfig.link}")
             except Exception as exp:
                 logger.error(f"{exp}->{user.id_user}")
                 continue
