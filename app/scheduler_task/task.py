@@ -3,7 +3,7 @@ from aiogram import Bot
 from loguru import logger
 
 from app.buy.yookassa import auto_payment
-from config import SettingConfig, YooKasConfig
+from config import SettingConfig
 from app.db.method import get_users_subscribe, blocking, cancel_subscribe_db
 from app.user.button import buy_button
 
@@ -34,8 +34,6 @@ async def push_not_sub(bot: Bot):
                     await bot.send_message(chat_id=user.id_user, text='Доступ снова открыт. Ты можешь снова вступить в клуб', reply_markup=buy_button())
                     await bot.send_message(chat_id=1027526485,
                                            text=f"Пользователь: {user.email_str} разблокирован!")
-                elif user.email_str == "annasimonenko2006@mail.ru":
-                    await bot.send_message(chat_id=user.id_user, text=f"{YooKasConfig.link}")
             except Exception as exp:
                 logger.error(f"{exp}->{user.id_user}")
                 continue
