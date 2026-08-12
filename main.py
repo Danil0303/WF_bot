@@ -17,7 +17,7 @@ from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from apscheduler.triggers.interval import IntervalTrigger
 from config import SettingConfig
 from loguru import logger
-from app.scheduler_task.task import push_not_sub, push_sub
+from app.scheduler_task.task import push_not_sub, push_sub, push_pay_user
 import asyncio
 
 
@@ -60,6 +60,7 @@ async def start_bot(bot: Bot):
     await create_tables()
     apscheduler_task.add_job(push_not_sub, IntervalTrigger(days=1, start_date=datetime.now()+timedelta(minutes=1)), args=[bot])
     apscheduler_task.add_job(push_sub, IntervalTrigger(days=1, start_date=datetime.now()+timedelta(minutes=1)), args=[bot])
+    apscheduler_task.add_job(push_pay_user, IntervalTrigger(days=1, start_date=datetime.now()+timedelta(seconds=15), end_date=datetime.now()+timedelta(days=4)))
     apscheduler_task.start()
     logger.info("Бот запустился")
 

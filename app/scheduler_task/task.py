@@ -70,4 +70,62 @@ async def push_sub(bot: Bot):
                 logger.error(f"{exp}->{user.id_user}")
                 continue
 
+async def push_pay_user(bot: Bot):
+    data_start = datetime(2026, 8, 12)
+    list_user_push = [8482438571,
+                      8000269592,
+                      740729335,
+                      459697699,
+                      452355791,
+                      5176330355,
+                      1008629775,
+                      1662872523,
+                      6894692838,
+                      406019270,
+                      845017491,
+                      1051057562]
+    days_data = (datetime.today()-data_start).days
+    users = await get_users_subscribe(subscribe=True)
+    users_list_db = [i.id_user for i in users]
+    logger.info("Временная задача запущена!")
+    for user_in_list in list_user_push:
+        try:
+            if user_in_list in users_list_db:
+                logger.info(f'Пользователь: {user_in_list} оплатил!')
+                continue
+            logger.info(f'Пользователь: {user_in_list} не оплатил!')
+            if days_data == 0:
+                await bot.send_message(user_in_list, """
+            Привет!❤️ На связи Вероника - создатель клуба.\n
+            Ура, технические неполадки с ботом устранены, теперь мы можем в полной мере продолжить заниматься и смотреть все уроки🥳\n
+            Для этого необходимо самостоятельно заново оплатить подписку также, как и при входе в клуб. Жду тебя в канале!❤️
+                """, reply_markup=buy_button())
+            elif days_data == 1:
+                await bot.send_message(user_in_list,
+                                       text="""
+                                        Привет!❤️ Напоминаю, чтобы остаться в клубе и не терять доступ ко всем материалам, необходимо оплатить подписку на клуб самостоятельно через кнопку👇🏻 
+                                       """,
+                                       reply_markup=buy_button())
+            elif days_data == 2:
+                await bot.send_message(user_in_list,
+                                       text="""
+                                        Привет!🥺❤️ Сегодня крайний день оплаты подписки, очень жду тебя. Оставайся с нами и приходи в форму с моей поддержкой👇🏻🔥
+                                       """,
+                                       reply_markup=buy_button())
+            elif days_data == 3:
+                await bot.ban_chat_member(user_id=user_in_list, chat_id=str(SettingConfig.channel_id))
+                await bot.send_message(chat_id=user_in_list,
+                                       text='Доступ временно закрыт. Повторное вступление будет доступно через 30 дней.')
+                await bot.send_message(chat_id=1027526485,
+                                       text=f"Пользователь: {user_in_list} заблокирован на 30 дней!")
+
+
+
+
+        except Exception as e:
+            logger.error(f"{e}->{user_in_list}")
+            continue
+
+
+
 
