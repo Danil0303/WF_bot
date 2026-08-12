@@ -60,7 +60,7 @@ async def start_bot(bot: Bot):
     await create_tables()
     apscheduler_task.add_job(push_not_sub, IntervalTrigger(days=1, start_date=datetime.now()+timedelta(minutes=1)), args=[bot])
     apscheduler_task.add_job(push_sub, IntervalTrigger(days=1, start_date=datetime.now()+timedelta(minutes=1)), args=[bot])
-    apscheduler_task.add_job(push_pay_user, IntervalTrigger(days=1, start_date=datetime.now()+timedelta(seconds=15), end_date=datetime.now()+timedelta(days=4)))
+    apscheduler_task.add_job(push_pay_user, IntervalTrigger(days=1, start_date=datetime.now()+timedelta(seconds=15), end_date=datetime.now()+timedelta(days=4)), args=[bot])
     apscheduler_task.start()
     logger.info("Бот запустился")
 
