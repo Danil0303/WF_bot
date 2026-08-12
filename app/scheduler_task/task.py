@@ -83,7 +83,8 @@ async def push_pay_user(bot: Bot):
                       6894692838,
                       406019270,
                       845017491,
-                      1051057562]
+                      1051057562,
+                      1027526485]
     days_data = (datetime.today()-data_start).days
     users = await get_users_subscribe(subscribe=True)
     users_list_db = [i.id_user for i in users]
